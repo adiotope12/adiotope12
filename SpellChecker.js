@@ -39,13 +39,13 @@ function SequenceAlignment(word1,word2){
   let m = word1.length; 
   let n = word2.length;
    
-  let dp = new Array(n + m + 1).fill().map(() => new Array(n + m + 1).fill(0));
+  let table = new Array(n + m + 1).fill().map(() => new Array(n + m + 1).fill(0));
    
   //Filling the table
   for (i = 0; i <= (n + m); i++)
   {
-      dp[i][0] = i * 2;
-      dp[0][i] = i * 2;
+    table[i][0] = i * 2;
+    table[0][i] = i * 2;
   } 
 
   //Finding the Penalty
@@ -56,7 +56,7 @@ function SequenceAlignment(word1,word2){
           //Choose to match, and characters are the same 
           if (word1.charAt(i - 1) == word2.charAt(j - 1))
           {
-              dp[i][j] = dp[i - 1][j - 1];
+            table[i][j] = table[i - 1][j - 1];
           }
           else
           {
@@ -67,15 +67,13 @@ function SequenceAlignment(word1,word2){
             } else{
                mismatchPen = 1;
             }
-              dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1] + mismatchPen , 
-                                           dp[i - 1][j] + 2) , 
-                                           dp[i][j - 1] + 2 );
+            table[i][j] = Math.min(Math.min(table[i - 1][j - 1] + mismatchPen , table[i - 1][j] + 2) ,table[i][j - 1] + 2 );
           }
       }
   }
 
   //Return the penalty
-  return dp[m][n]
+  return table[m][n]
 
 }
 

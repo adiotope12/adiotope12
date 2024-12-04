@@ -33,35 +33,34 @@ function SpellChecker() {
 }
 
 function SequenceAlignment(word1,word2){
-  let i, j; // initialising variables
+  let i, j; 
   let vowels = ["a","e","i","o","u"];
      
-  let m = word1.length; // length of gene1
-  let n = word2.length; // length of gene2
+  let m = word1.length; 
+  let n = word2.length;
    
-  // table for storing optimal
-  // substructure answers
   let dp = new Array(n + m + 1).fill().map(() => new Array(n + m + 1).fill(0));
    
-  // initialising the table 
+  //Filling the table
   for (i = 0; i <= (n + m); i++)
   {
       dp[i][0] = i * 2;
       dp[0][i] = i * 2;
   } 
 
-  // calculating the 
-  // minimum penalty
+  //Finding the Penalty
   for (i = 1; i <= m; i++)
   {
       for (j = 1; j <= n; j++)
       {
+          //Choose to match, and characters are the same 
           if (word1.charAt(i - 1) == word2.charAt(j - 1))
           {
               dp[i][j] = dp[i - 1][j - 1];
           }
           else
           {
+            //Choose to match different characters, or add gap
             let mismatchPen = 0;
             if(vowels.includes(word1.charAt(i - 1)) && !vowels.includes(word2.charAt(j - 1))){
                mismatchPen = 3;
@@ -75,6 +74,7 @@ function SequenceAlignment(word1,word2){
       }
   }
 
+  //Return the penalty
   return dp[m][n]
 
 }
